@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #ecf0f1; 
+        }
+
+        .top-bar {
+            background-color: #3498db;
+            color: #ecf0f1;
+            text-align: left;
+            padding: 2px 70px; 
+            font-size: 20px;
+            position: fixed;
+            width: 100%;
+            height: 70px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+            box-sizing: border-box;
+        }
+		.projects {
+			list-style: none;
+			display: flex;
+			flex-wrap: wrap;
+			margin: 10px;
+			height: 630px;
+		}
+		.projects .project-item {
+			padding: 14px;
+			margin: 12px;
+			box-sizing: border-box;
+			display: flex;
+			height: 350px;
+			flex-direction: column;
+			text-align: left;
+			border-radius: 5px;
+			box-shadow: 0px 7px 7px 7px rgba(181, 181, 181, 0.38);
+			width: 285px;
+			margin-right: 30px;
+		}
+		.projects .project-item .title-row {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			margin: 20px 0 10px;
+		}
+		.projects .project-item .title-row h3 {
+			font-weight: bold;
+		}
+		.projects .project-item .title-row .links {
+			display: flex;
+			align-content: center;
+			padding: 8px 0;
+			color: #88909c;
+			font-size: 0.75em;
+		}
+		.projects .project-item .title-row .links .icon {
+			margin-right: 5px;
+		}
+		.projects .project-item .title-row .links a {
+			color: #88909c;
+			text-decoration: none;
+		}
+		.projects .project-item .desc-row {
+			color: #88909c;
+			font-size: 12px;
+			font-weight: 400;
+			line-height: 18px;
+		}
+		.projects .project-item .progress-row {
+			display: flex;
+			flex-direction: column;
+			margin: 20px 0;
+		}
+		.projects .project-item .progress-row p.value-label {
+			display: block;
+		}
+		.projects .project-item .progress-row p[data-value] {
+			position: relative;
+		}
+		.projects .project-item .progress-row p[data-value]:after {
+			content: attr(data-value) "%";
+			color: #88909c;
+			font-size: 12px;
+			position: absolute;
+			display: block;
+			right: -10px;
+		}
+		.projects .project-item .progress-row progress {
+			display: block;
+			position: relative;
+			width: 100%;
+			margin-top: 20px;
+			-webkit-appearance: none;
+			height: 6px;
+		}
+		.projects .project-item .progress-row progress::-webkit-progress-bar {
+			background-color: #d7dce0;
+			border-radius: 5px;
+		}
+		.projects .project-item .progress-row ::-webkit-progress-value {
+			background-color: #17c993;
+			border-radius: 5px;
+		}
+		.projects .project-item .progress-row .low::-webkit-progress-value {
+			background-color: #ec407a;
+		}
+		.projects .project-item .footer-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		.projects .project-item .footer-row .days {
+			padding: 8px 5px;
+			border-radius: 4px;
+			background: #bbc3c9;
+			font-size: 12px;
+			color: #565d68;
+			background: #dbdee2;
+		}
+		.projects .project-item .footer-row .days.good {
+			color: #4caf50;
+			background: #fcfefc;
+		}
+		.projects .project-item .footer-row .days.warning {
+			color: #fb8c00;
+			background: #ffe7c8;
+		}
+		.projects .project-item .footer-row .days.danger {
+			color: #d32f2f;
+			background: #f7d7d7;
+		}
+		.projects .project-item .footer-row .users img {
+			border-radius: 3px;
+			margin: 0 2px;
+		}
+        .dashboard {
+            position: fixed;
+            top: 50px;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #3498db; 
+            transition: 0.5s;
+			text-align: center;
+            padding-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .dashboard a {
+            padding: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #ecf0f1; 
+            display: block;
+            transition: 0.3s;
+        }
+
+        .dashboard a:hover {
+            color: #bdc3c7; 
+        }
+
+        .slider-container {
+            margin-left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+            transition: margin-left 0.5s ease-in-out;
+        }
+
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            background-color: #ecf0f1;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .slider-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+			padding-top: 35px;
+        }
+
+        .left-content {
+            flex-grow: 1;
+			height: 100%;
+			width: 70%;
+            padding-right: 30px;
+            margin-right: 100px;
+            border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+			border-bottom-right-radius: 10px;
+			overflow-y: auto;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            background-color: #ffffff;
+            color: #404040;
+        }
+
+        .right-content {
+            height: 100%;
+			width: 30%;
+            border-top-right-radius: 10px;
+			border-top-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+			border-bottom-left-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            background-color: #ffffff;
+            color: #404040;
+        }
+
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 3;
+            color: #ecf0f1;
+        }
+
+        .button1 {
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 3;
+            background: none;
+            border: none;
+            color: #ecf0f1;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+		.right-content .extra-divs {
+			height: 100px;
+			width: 350px;
+			margin: 10px;
+			border-radius: 15px;
+		}
+		
+		.right-content .extra-divs .icon1 {
+			height 100px;
+			width: 80px;
+			padding-left: 12px;
+			padding-top: 19px;
+			float: left;
+		}
+		
+		.right-content .extra-divs .icon2 {
+			height 100px;
+			width: 90px;
+			padding-top: 19px;
+			padding-left: 3px;
+			float: left;
+		}
+
+		.right-content .extra-divs .icon3 {
+			height 100px;
+			width: 80px;
+			padding-left: 12px;
+			padding-top: 12px;
+			float: left;
+		}
+		
+		.right-content .extra-divs .icon4 {
+			height 100px;
+			width: 80px;
+			padding-left: 12px;
+			padding-top: 12px;
+			float: left;
+		}
+		
+		.right-content .extra-divs .icon-text {
+			padding-top: 17px;
+			padding-left: 10px;
+			float: left;
+			color: white;
+			font-size: 20px;
+		}
+    </style>
+</head>
+<body>
+
+    <div class="top-bar"><br><i><b>Client</b></i></div>
+
+    <div class="toggle-button" onclick="toggleDashboard()">☰</div>
+
+    <div class="dashboard">
+        <br><br><br><br><br><br>
+        <a class="button1" href="http://127.0.0.1:8000/post_job/">Post a Job</a>
+        <a class="button1" href="http://127.0.0.1:8000/Client_Edit/">Change Account Details</a>
+        <a class="button1" href="http://127.0.0.1:8000/job_history/">Jobs History</a>
+		<a class="button1" href="{% url 'clientjob' %}">Manage Job</a>
+		<a class="button1" href="http://127.0.0.1:8000/Post_Review/">Give Feedback</a>
+		<br><br><br><br><br><br>
+		<a class="button1" href="http://127.0.0.1:8000/">Signout</a>
+    </div>
+
+    <div class="slider-container">
+        <div class="slide">
+            <div class="slider-content">
+                <div class="left-content">
+				<section class="app-content">
+					<h1>{% if welcome_message %}
+							{{ welcome_message }}
+						{% else %}
+							Welcome to the Client Dashboard
+						{% endif %}</h1>
+					<h1>Active Jobs</h1>
+					<ul class="projects">
+						{% for project in projects %}
+							<li class="project-item">
+								<div class="title-row">
+									<h3>Job ID: {{ project.userid }}</h3>
+									<h3> Job Title: {{ project.jobtitle }} </h3>
+								</div>
+								<div class="desc-row">
+									<p> Job Description: {{ project.jobd }}</p>
+								</div>
+								<div class="progress-row">
+									<p class="value-label" style="width: {{ project.progress }}%" data-value="{{ project.progress }}"></p>
+									<progress max="100" value="{{ project.progress }}" data-value="{{ project.progress }}">{{ project.progress }}%</progress>
+								</div>
+								<div class="footer-row">
+									<div class="days danger">
+										<i class="fa fa-clock-o icon" aria-hidden="true"></i> {{ project.days_left }} days left
+									</div>
+									<div class="users">
+										Budget: {{ project.budget }}$
+									</div>
+								</div>
+							</li>
+						{% endfor %}
+					</ul>
+					
+					
+                </div>
+                <div class="right-content">
+                    <div class="extra-divs" style="background-color: #3498db;">
+						<img class="icon1" src="/static/images.jpeg">
+						<b>
+							<p class="icon-text">Reviews</p>
+						</b>
+					</div>
+					<div class="extra-divs" style="background-color: #2ecc71;">
+						<img class="icon2" src="/static/download.jpg">
+						<b>
+							<p class="icon-text">Jobs Posted</p>
+							<p class="icon-text">  {{ total }} </p>
+
+						</b>
+					</div>
+					<div class="extra-divs" style="background-color: #e74c3c;">
+						<img class="icon3" src="/static/download1.jpg">
+						<b>
+							<p class="icon-text">History</p>
+						</b>
+					</div>
+						<div class="extra-divs" style="background-color: #f39c12;">
+						<img class="icon4" src="/static/images3.jpg">
+						<b>
+							<p class="icon-text">Wallet</p>
+						</b>
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let dashboardOpen = false;
+
+        function toggleDashboard() {
+            dashboardOpen = !dashboardOpen;
+            const sliderContainer = document.querySelector('.slider-container');
+            const translateValue = dashboardOpen ? '0' : '-250px';
+
+            document.querySelector('.dashboard').style.left = translateValue;
+            sliderContainer.style.marginLeft = dashboardOpen ? '250px' : '0';
+        }
+    </script>
+
+</body>
+</html>

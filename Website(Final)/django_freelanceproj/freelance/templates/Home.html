@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #ecf0f1; 
+        }
+
+        .slider-container {
+            margin-left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            background-color: #ecf0f1;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+            font-size: 24px;
+			background: url('/static/wall2.jpg') 50% 50% no-repeat fixed;
+        }
+
+        .slider-content {
+            display: flex;
+			color: #ecf0f1;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .top-bar {
+            background-color: #3498db;
+            color: #ecf0f1;
+            text-align: left;
+            padding: 2px 20px;
+            font-size: 20px;
+            position: fixed;
+            width: 100%;
+            height: 70px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar .brand {
+            margin-right: 875px;
+			z-index: -1;
+        }
+
+        .top-bar .buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar button {
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 3;
+            background: none;
+            border: none;
+            color: #ecf0f1;
+            transition: color 0.3s;
+            text-decoration: none;
+            margin-left: 20px;
+            border-radius: 2000px;
+            padding: 10px 20px;
+            border: 2px solid #fff;
+        }
+
+        .top-bar button:hover {
+            color: #bdc3c7;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+		<img src="/static/icon.jpg">
+        <div class="brand">
+			<i><b>Freelancers</b></i>
+		</div>
+        <div class="buttons">
+            <button class="button1" onclick="location.href='http://127.0.0.1:8000/login/'">Login</button>
+            <button class="button1" onclick="location.href='http://127.0.0.1:8000/signup'">Sign Up</button>
+        </div>
+    </div>
+
+    <div class="slider-container">
+        <div class="slide">
+            <div class="slider-content">
+                <h1>Welcome to Our Homepage</h1>
+                <p>"Transform dreams into reality: Dana's passion ignited, and so can yours. Let's turn your aspirations into accomplishments together."</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
